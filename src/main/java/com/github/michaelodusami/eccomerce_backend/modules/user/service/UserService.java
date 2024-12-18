@@ -29,7 +29,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-
     
     /** 
      * @param id
@@ -40,6 +39,15 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    
+    /** 
+     * @param id
+     * @return Optional<User>
+     */
+    public Optional<User> findByEmail(@NonNull String email)
+    {
+        return userRepository.findByEmail(email);
+    }
     
     /** 
      * @param user
