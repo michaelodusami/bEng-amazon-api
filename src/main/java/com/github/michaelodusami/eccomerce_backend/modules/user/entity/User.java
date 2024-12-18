@@ -1,8 +1,11 @@
 package com.github.michaelodusami.eccomerce_backend.modules.user.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +29,9 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String role;
+    
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Set<String> roles;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
