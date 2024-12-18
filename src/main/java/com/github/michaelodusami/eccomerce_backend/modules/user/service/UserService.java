@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.github.michaelodusami.eccomerce_backend.common.dto.RegisterRequest;
 import com.github.michaelodusami.eccomerce_backend.modules.user.entity.User;
 import com.github.michaelodusami.eccomerce_backend.modules.user.repository.UserRepository;
 
@@ -14,10 +16,13 @@ public class UserService {
     
     private UserRepository userRepository;
 
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserService(UserRepository userRepository)
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder)
     {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     
@@ -53,8 +58,18 @@ public class UserService {
      * @param user
      * @return Optional<User>
      */
-    public Optional<User> save(@NonNull User user)
+    public Optional<User> save(@NonNull RegisterRequest registerRequest)
     {
+        
+        if (findByEmail(registerRequest.getEmail()).isPresent())
+        {
+            throw new IllegalArgumentException("Email already registered");
+        }
+        User user = new User();
+        user.setName(registerRequest.getName());
+        user.setEmail(registerRequest.getEmail());
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         User savedUser = userRepository.save(user);
         return Optional.of(savedUser);
     }
