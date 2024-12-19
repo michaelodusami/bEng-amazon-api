@@ -18,7 +18,8 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtService {
     
-    private static final String SECRET_KEY = "secret";
+    // not sure if generating it is the right thing to do, should be stored somewhere
+    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION_TIME = 100 * 60 * 30;
 
     public String generateToken(String email) {
@@ -36,9 +37,8 @@ public class JwtService {
                 .compact();
     }
 
-    private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
+    protected Key getSignKey() {
+        return SECRET_KEY;
     }
 
     public String extractUsername(String token) {
