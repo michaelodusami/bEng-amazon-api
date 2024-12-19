@@ -9,9 +9,14 @@ import com.github.michaelodusami.fakeazon.modules.user.repository.UserRepository
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+    
+    private UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public CustomUserDetailsService(UserRepository userRepository)
+    {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
