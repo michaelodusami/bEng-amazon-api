@@ -19,6 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import com.github.michaelodusami.fakeazon.common.security.CustomUserDetailsService;
 import com.github.michaelodusami.fakeazon.common.security.JwtAuthFilter;
+import com.github.michaelodusami.fakeazon.modules.user.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -26,15 +27,18 @@ public class SecurityConfig {
 
     private JwtAuthFilter authFilter;
 
+    private UserRepository userRepository;
+
     @Autowired
-    public SecurityConfig(JwtAuthFilter authFilter) {
+    public SecurityConfig(JwtAuthFilter authFilter, UserRepository repository) {
         this.authFilter = authFilter;
+        this.userRepository = repository;
     }
 
     @Bean
     public UserDetailsService userDetailsService()
     {
-        return new CustomUserDetailsService();
+        return new CustomUserDetailsService(userRepository);
     }
     
 
