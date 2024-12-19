@@ -68,7 +68,7 @@ public class UserService {
         User user = new User();
         user.setName(registerRequest.getName());
         user.setEmail(registerRequest.getEmail());
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
         user.setPassword(encodedPassword);
         User savedUser = userRepository.save(user);
         return Optional.of(savedUser);
