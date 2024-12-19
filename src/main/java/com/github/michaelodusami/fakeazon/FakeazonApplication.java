@@ -1,14 +1,14 @@
-package com.github.michaelodusami.eccomerce_backend;
+package com.github.michaelodusami.fakeazon;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EccomerceBackendApplication {
+public class FakeazonApplication {
 
-	// private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(EccomerceBackendApplication.class);
+	// private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(FakeazonApplication.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(EccomerceBackendApplication.class, args);
+		SpringApplication.run(FakeazonApplication.class, args);
 	}
 
 	// @Bean

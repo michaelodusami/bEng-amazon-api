@@ -1,4 +1,4 @@
-package com.github.michaelodusami.eccomerce_backend.common.security;
+package com.github.michaelodusami.fakeazon.common.security;
 
 import java.security.Key;
 import java.util.Date;

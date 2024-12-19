@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.github.michaelodusami</groupId>
-	<artifactId>eccomerce-backend</artifactId>
+	<artifactId>fakeazon</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>eccomerce-backend</name>
+	<name>Fakeazon</name>
 	<description>a backend for an e-commerce platform consisting of multiple modules.</description>
 	<url/>
 	<licenses>

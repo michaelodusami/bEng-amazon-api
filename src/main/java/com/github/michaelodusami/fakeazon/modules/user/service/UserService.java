@@ -1,4 +1,4 @@
-package com.github.michaelodusami.eccomerce_backend.modules.user.service;
+package com.github.michaelodusami.fakeazon.modules.user.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.github.michaelodusami.eccomerce_backend.common.dto.RegisterRequest;
-import com.github.michaelodusami.eccomerce_backend.modules.user.entity.User;
-import com.github.michaelodusami.eccomerce_backend.modules.user.repository.UserRepository;
+import com.github.michaelodusami.fakeazon.common.dto.RegisterRequest;
+import com.github.michaelodusami.fakeazon.modules.user.entity.User;
+import com.github.michaelodusami.fakeazon.modules.user.repository.UserRepository;
 
 import lombok.NonNull;
 

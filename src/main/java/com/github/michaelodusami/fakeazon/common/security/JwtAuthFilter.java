@@ -1,4 +1,4 @@
-package com.github.michaelodusami.eccomerce_backend.common.security;
+package com.github.michaelodusami.fakeazon.common.security;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.github.michaelodusami.eccomerce_backend.modules.user.repository.UserRepository;
+import com.github.michaelodusami.fakeazon.modules.user.repository.UserRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

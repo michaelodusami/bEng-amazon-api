@@ -1,4 +1,4 @@
-package com.github.michaelodusami.eccomerce_backend.common.security;
+package com.github.michaelodusami.fakeazon.common.security;
 
 import java.util.Collection;
 import java.util.Set;
@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import com.github.michaelodusami.eccomerce_backend.modules.user.entity.User;
+import com.github.michaelodusami.fakeazon.modules.user.entity.User;
 
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 

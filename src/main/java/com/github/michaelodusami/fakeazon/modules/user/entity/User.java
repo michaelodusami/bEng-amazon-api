@@ -1,4 +1,4 @@
-package com.github.michaelodusami.eccomerce_backend.modules.user.entity;
+package com.github.michaelodusami.fakeazon.modules.user.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;

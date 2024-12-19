@@ -1,4 +1,4 @@
-package com.github.michaelodusami.eccomerce_backend.modules.user.controller;
+package com.github.michaelodusami.fakeazon.modules.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.michaelodusami.eccomerce_backend.common.dto.LoginRequest;
-import com.github.michaelodusami.eccomerce_backend.common.dto.RegisterRequest;
-import com.github.michaelodusami.eccomerce_backend.common.dto.AuthResponse;
-import com.github.michaelodusami.eccomerce_backend.common.security.JwtService;
-import com.github.michaelodusami.eccomerce_backend.modules.user.entity.User;
-import com.github.michaelodusami.eccomerce_backend.modules.user.service.UserService;
+import com.github.michaelodusami.fakeazon.common.dto.LoginRequest;
+import com.github.michaelodusami.fakeazon.common.dto.RegisterRequest;
+import com.github.michaelodusami.fakeazon.common.dto.AuthResponse;
+import com.github.michaelodusami.fakeazon.common.security.JwtService;
+import com.github.michaelodusami.fakeazon.modules.user.entity.User;
+import com.github.michaelodusami.fakeazon.modules.user.service.UserService;
 
 import jakarta.validation.Valid;
 

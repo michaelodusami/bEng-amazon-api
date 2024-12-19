@@ -1,4 +1,4 @@
-package com.github.michaelodusami.eccomerce_backend.config;
+package com.github.michaelodusami.fakeazon.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +17,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.github.michaelodusami.eccomerce_backend.common.security.CustomUserDetailsService;
-import com.github.michaelodusami.eccomerce_backend.common.security.JwtAuthFilter;
+import com.github.michaelodusami.fakeazon.common.security.CustomUserDetailsService;
+import com.github.michaelodusami.fakeazon.common.security.JwtAuthFilter;
 
 @Configuration
 @EnableWebSecurity

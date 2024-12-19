@@ -1,4 +1,4 @@
-package com.github.michaelodusami.eccomerce_backend.common.dto;
+package com.github.michaelodusami.fakeazon.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
