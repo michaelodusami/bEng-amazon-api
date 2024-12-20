@@ -40,6 +40,9 @@ import lombok.NoArgsConstructor;
  * - @Table: Specifies the table name explicitly.
  * - @NoArgsConstructor, @AllArgsConstructor, @Data, @Builder: Lombok annotations 
  *   that reduce boilerplate by generating constructors, getters, setters, and builder methods.
+ * 
+ * @author Michael-Andre Odusami
+ * @version 1.0.0
  */
 @NoArgsConstructor
 @AllArgsConstructor
