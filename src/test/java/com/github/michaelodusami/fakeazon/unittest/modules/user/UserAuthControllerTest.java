@@ -1,4 +1,4 @@
-package com.github.michaelodusami.fakeazon.modules.user;
+package com.github.michaelodusami.fakeazon.unittest.modules.user;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;

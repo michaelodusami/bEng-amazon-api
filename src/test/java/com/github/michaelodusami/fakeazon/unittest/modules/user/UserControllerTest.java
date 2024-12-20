@@ -1,4 +1,4 @@
-package com.github.michaelodusami.fakeazon.modules.user;
+package com.github.michaelodusami.fakeazon.unittest.modules.user;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

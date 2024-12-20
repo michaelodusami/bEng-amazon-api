@@ -1,4 +1,4 @@
-package com.github.michaelodusami.fakeazon.modules.user;
+package com.github.michaelodusami.fakeazon.unittest.modules.user;
 import com.github.michaelodusami.fakeazon.modules.user.entity.User;
 import com.github.michaelodusami.fakeazon.security.UserDetails;
 

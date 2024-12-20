@@ -1,4 +1,4 @@
-package com.github.michaelodusami.fakeazon.security;
+package com.github.michaelodusami.fakeazon.unittest.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

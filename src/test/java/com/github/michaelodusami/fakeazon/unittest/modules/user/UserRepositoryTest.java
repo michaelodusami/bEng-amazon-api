@@ -1,4 +1,4 @@
-package com.github.michaelodusami.fakeazon.modules.user;
+package com.github.michaelodusami.fakeazon.unittest.modules.user;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

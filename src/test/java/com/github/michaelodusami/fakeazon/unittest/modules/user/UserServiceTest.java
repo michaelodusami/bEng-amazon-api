@@ -1,4 +1,4 @@
-package com.github.michaelodusami.fakeazon.modules.user;
+package com.github.michaelodusami.fakeazon.unittest.modules.user;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
