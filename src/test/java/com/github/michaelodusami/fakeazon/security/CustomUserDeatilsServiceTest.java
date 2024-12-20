@@ -1,4 +1,4 @@
-package com.github.michaelodusami.security;
+package com.github.michaelodusami.fakeazon.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
