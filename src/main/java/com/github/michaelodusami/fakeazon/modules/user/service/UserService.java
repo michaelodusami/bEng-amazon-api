@@ -137,6 +137,11 @@ public class UserService {
             return true;
         }).orElse(false);
     }
+
+
+    public List<User> findUsersByRole(String role) {
+        return userRepository.findUsersByRole(role);
+    }
     
     
 }
