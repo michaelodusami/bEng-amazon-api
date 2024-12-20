@@ -7,10 +7,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +40,77 @@ public class UserServiceTest {
     public void setup()
     {
         MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void testChangePassword_Success() {
+        Long userId = 1L;
+        String newPassword = "newSecurePassword123";
+        User mockUser = new User(userId, "John Doe", "john@example.com", "oldEncodedPassword", null, null, null);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+        when(passwordEncoder.encode(newPassword)).thenReturn("newEncodedPassword");
+        when(userRepository.save(any(User.class))).thenReturn(mockUser);
+
+        boolean result = userService.changePassword(userId, newPassword);
+
+        assertTrue(result);
+        assertEquals("newEncodedPassword", mockUser.getPassword());
+        verify(userRepository, times(1)).findById(userId);
+        verify(passwordEncoder, times(1)).encode(newPassword);
+        verify(userRepository, times(1)).save(mockUser);
+    }
+
+    @Test
+    void testChangePassword_UserNotFound() {
+        Long userId = 1L;
+        String newPassword = "newSecurePassword123";
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        boolean result = userService.changePassword(userId, newPassword);
+
+        assertFalse(result);
+        verify(userRepository, times(1)).findById(userId);
+        verifyNoInteractions(passwordEncoder);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void testUpdateUser_NotFound() {
+        Long userId = 1L;
+        User updatedUser = new User(null, "John Updated", "john.updated@example.com", "newPassword", Set.of("ROLE_ADMIN"), null, null);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        Optional<User> result = userService.updateUser(userId, updatedUser);
+
+        assertFalse(result.isPresent());
+        verify(userRepository, times(1)).findById(userId);
+        verifyNoInteractions(passwordEncoder);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void testUpdateUser_Success() {
+        Long userId = 1L;
+        User existingUser = new User(userId, "John Doe", "john@example.com", "oldEncodedPassword", Set.of("ROLE_USER"), null, null);
+        User updatedUser = new User(null, "John Updated", "john.updated@example.com", "newPassword", Set.of("ROLE_ADMIN"), null, null);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+        when(passwordEncoder.encode(updatedUser.getPassword())).thenReturn("newEncodedPassword");
+        when(userRepository.save(any(User.class))).thenReturn(existingUser);
+
+        Optional<User> result = userService.updateUser(userId, updatedUser);
+
+        assertTrue(result.isPresent());
+        assertEquals("John Updated", result.get().getName());
+        assertEquals("john.updated@example.com", result.get().getEmail());
+        assertEquals("newEncodedPassword", result.get().getPassword());
+        assertEquals(Set.of("ROLE_ADMIN"), result.get().getRoles());
+        verify(userRepository, times(1)).findById(userId);
+        verify(passwordEncoder, times(1)).encode(updatedUser.getPassword());
+        verify(userRepository, times(1)).save(existingUser);
     }
 
     @Test
