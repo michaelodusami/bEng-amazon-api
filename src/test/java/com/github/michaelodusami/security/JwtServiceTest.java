@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.github.michaelodusami.fakeazon.common.security.JwtService;
+import com.github.michaelodusami.fakeazon.security.JwtService;
 
 public class JwtServiceTest {
     private JwtService jwtService;

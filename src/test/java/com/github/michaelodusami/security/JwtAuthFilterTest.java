@@ -28,11 +28,11 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import com.github.michaelodusami.fakeazon.common.security.JwtAuthFilter;
-import com.github.michaelodusami.fakeazon.common.security.JwtService;
-import com.github.michaelodusami.fakeazon.common.security.UserDetails;
 import com.github.michaelodusami.fakeazon.modules.user.entity.User;
 import com.github.michaelodusami.fakeazon.modules.user.repository.UserRepository;
+import com.github.michaelodusami.fakeazon.security.JwtAuthFilter;
+import com.github.michaelodusami.fakeazon.security.JwtService;
+import com.github.michaelodusami.fakeazon.security.UserDetails;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.michaelodusami.fakeazon.common.dto.LoginRequest;
 import com.github.michaelodusami.fakeazon.common.dto.RegisterRequest;
 import com.github.michaelodusami.fakeazon.common.dto.AuthResponse;
-import com.github.michaelodusami.fakeazon.common.security.JwtService;
 import com.github.michaelodusami.fakeazon.modules.user.entity.User;
 import com.github.michaelodusami.fakeazon.modules.user.service.UserService;
+import com.github.michaelodusami.fakeazon.security.JwtService;
 
 import jakarta.validation.Valid;
 

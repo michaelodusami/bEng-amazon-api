@@ -17,9 +17,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.github.michaelodusami.fakeazon.common.security.CustomUserDetailsService;
-import com.github.michaelodusami.fakeazon.common.security.JwtAuthFilter;
 import com.github.michaelodusami.fakeazon.modules.user.repository.UserRepository;
+import com.github.michaelodusami.fakeazon.security.CustomUserDetailsService;
+import com.github.michaelodusami.fakeazon.security.JwtAuthFilter;
 
 @Configuration
 @EnableWebSecurity

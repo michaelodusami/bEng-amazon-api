@@ -1,4 +1,4 @@
-package com.github.michaelodusami.fakeazon.common.security;
+package com.github.michaelodusami.fakeazon.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = userRepository.findByEmail(email);
-        return user.map(com.github.michaelodusami.fakeazon.common.security.UserDetails::new).orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+        return user.map(com.github.michaelodusami.fakeazon.security.UserDetails::new).orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
         
     }
     

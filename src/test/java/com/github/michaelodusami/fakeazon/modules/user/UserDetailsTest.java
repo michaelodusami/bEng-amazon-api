@@ -1,6 +1,7 @@
 package com.github.michaelodusami.fakeazon.modules.user;
-import com.github.michaelodusami.fakeazon.common.security.UserDetails;
 import com.github.michaelodusami.fakeazon.modules.user.entity.User;
+import com.github.michaelodusami.fakeazon.security.UserDetails;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
 

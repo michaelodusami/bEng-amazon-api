@@ -1,4 +1,4 @@
-package com.github.michaelodusami.fakeazon.common.security;
+package com.github.michaelodusami.fakeazon.security;
 
 import java.security.Key;
 import java.util.Date;

@@ -17,10 +17,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.github.michaelodusami.fakeazon.common.security.CustomUserDetailsService;
-import com.github.michaelodusami.fakeazon.common.security.UserDetails;
 import com.github.michaelodusami.fakeazon.modules.user.entity.User;
 import com.github.michaelodusami.fakeazon.modules.user.repository.UserRepository;
+import com.github.michaelodusami.fakeazon.security.CustomUserDetailsService;
+import com.github.michaelodusami.fakeazon.security.UserDetails;
 
 public class CustomUserDeatilsServiceTest {
     
