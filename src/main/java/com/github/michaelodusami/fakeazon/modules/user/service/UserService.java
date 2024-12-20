@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.github.michaelodusami.fakeazon.common.dto.RegisterRequest;
+import com.github.michaelodusami.fakeazon.modules.user.dto.RegisterRequest;
 import com.github.michaelodusami.fakeazon.modules.user.entity.User;
 import com.github.michaelodusami.fakeazon.modules.user.enums.UserRole;
 import com.github.michaelodusami.fakeazon.modules.user.repository.UserRepository;

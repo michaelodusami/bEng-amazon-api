@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.michaelodusami.fakeazon.common.dto.RegisterRequest;
+import com.github.michaelodusami.fakeazon.modules.user.dto.RegisterRequest;
 import com.github.michaelodusami.fakeazon.modules.user.entity.User;
 import com.github.michaelodusami.fakeazon.modules.user.enums.UserRole;
 import com.github.michaelodusami.fakeazon.modules.user.service.UserService;
