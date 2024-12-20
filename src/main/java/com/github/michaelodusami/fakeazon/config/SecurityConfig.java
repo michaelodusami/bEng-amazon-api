@@ -25,22 +25,16 @@ import com.github.michaelodusami.fakeazon.security.JwtAuthFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private JwtAuthFilter authFilter;
-
-    private UserRepository userRepository;
+    private final JwtAuthFilter authFilter;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SecurityConfig(JwtAuthFilter authFilter, UserRepository repository) {
+    public SecurityConfig(JwtAuthFilter authFilter, CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder) {
         this.authFilter = authFilter;
-        this.userRepository = repository;
+        this.customUserDetailsService = customUserDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
-
-    @Bean
-    public UserDetailsService userDetailsService()
-    {
-        return new CustomUserDetailsService(userRepository);
-    }
-    
 
     @Bean
     public PasswordEncoder passwordEncoder()
@@ -52,7 +46,7 @@ public class SecurityConfig {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception
     {
         auth
-            .userDetailsService(userDetailsService())
+            .userDetailsService(customUserDetailsService)
             .passwordEncoder(new BCryptPasswordEncoder());
     }
 
