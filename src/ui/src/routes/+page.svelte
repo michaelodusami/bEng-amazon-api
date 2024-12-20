@@ -1,2 +1,14 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+    import Navbar from "$lib/componenets/navigation/Navbar.svelte";
+</script>
+
+
+<header>
+    <Navbar/>
+</header>
+<main>
+    main content
+</main>
+<footer>
+
+</footer>

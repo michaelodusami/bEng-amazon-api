@@ -3,6 +3,7 @@
     import axios from "axios"
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 	import { apiRoutes } from "$lib/common/api";
+	import { loginUser } from "$lib/stores/user";
 
     let email = "";
     let password = "";
@@ -16,9 +17,6 @@
                 error = "Invalid Credentials";
                 return;
             }
-
-            const token = await response.data.token
-            localStorage.setItem("token", token);
             await goto("/");
         }
         catch(err)

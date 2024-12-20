@@ -1,6 +1,7 @@
 <script>
     import { goto } from '$app/navigation';
 	import { apiRoutes } from '$lib/common/api';
+    import { loginUser } from "$lib/stores/user";
     import axios from "axios";
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -27,8 +28,7 @@
                 error = "Registration failed. Please try again.";
                 return;
             }
-
-            await goto("/login");
+      
         } catch (err) {
             // @ts-ignore
             error = `An error occurred. Please try again. [Error: ${err.message}]`;

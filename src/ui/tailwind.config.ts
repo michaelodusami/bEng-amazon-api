@@ -6,7 +6,12 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 
 	theme: {
-		extend: {}
+		extend: {
+			colors: {
+				fakeazonGreen: '#007600',
+				fakeazonPink: '#FF9900',
+			  },
+		}
 	},
 
 	plugins: [typography, forms]
