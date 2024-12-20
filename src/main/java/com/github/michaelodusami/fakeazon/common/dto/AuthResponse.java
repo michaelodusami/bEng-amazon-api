@@ -12,11 +12,12 @@ import lombok.Setter;
 @Setter
 @Getter
 public class AuthResponse {
+    private Long id;
     private String name;
     private String email;
 
     public static AuthResponse toUser(User user)
     {
-        return new AuthResponse(user.getName(), user.getEmail());
+        return new AuthResponse(user.getId(), user.getName(), user.getEmail());
     }
 }
