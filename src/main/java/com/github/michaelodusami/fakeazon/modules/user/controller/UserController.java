@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.michaelodusami.fakeazon.modules.user.entity.User;
 import com.github.michaelodusami.fakeazon.modules.user.service.UserService;
 
-import jakarta.annotation.security.RolesAllowed;
-
 import java.util.List;
 
 /**

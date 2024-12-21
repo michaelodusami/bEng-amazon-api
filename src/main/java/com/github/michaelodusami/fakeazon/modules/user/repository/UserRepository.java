@@ -5,40 +5,47 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.github.michaelodusami.fakeazon.modules.user.entity.User;
 
 /**
- * The UserRepository interface provides data access methods for managing User entities.
+ * The UserRepository interface provides data access methods for managing User
+ * entities.
  * 
  * Purpose:
- * This repository serves as a bridge between the database and the application logic,
- * enabling seamless CRUD (Create, Read, Update, Delete) operations on User entities.
+ * This repository serves as a bridge between the database and the application
+ * logic,
+ * enabling seamless CRUD (Create, Read, Update, Delete) operations on User
+ * entities.
  * 
  * Why It Matters:
- * By extending the Spring Data JPA repository, this interface leverages powerful query
- * generation and customization capabilities, reducing boilerplate and ensuring efficient 
+ * By extending the Spring Data JPA repository, this interface leverages
+ * powerful query
+ * generation and customization capabilities, reducing boilerplate and ensuring
+ * efficient
  * data management.
  * 
  * Impact on the Application:
  * - Supports user authentication by providing methods like `findByEmail`.
- * - Facilitates role-based user management through custom queries like `findUsersByRole`.
- * - Centralizes user-related database queries, promoting consistency and maintainability.
+ * - Facilitates role-based user management through custom queries like
+ * `findUsersByRole`.
+ * - Centralizes user-related database queries, promoting consistency and
+ * maintainability.
  * 
  * @author Michael-Andre Odusami
  * @version 1.0.0
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    
+
     /**
      * Finds a user by their email address.
      * 
      * Purpose:
-     * This method is critical for user authentication workflows, as the email is used as 
+     * This method is critical for user authentication workflows, as the email is
+     * used as
      * a unique identifier during login.
      * 
      * Impact:
@@ -54,7 +61,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Finds all users assigned to a specific role.
      * 
      * Purpose:
-     * Enables filtering and retrieval of users based on their roles, which is critical 
+     * Enables filtering and retrieval of users based on their roles, which is
+     * critical
      * for features like admin management and role-specific dashboards.
      * 
      * Impact:
@@ -66,4 +74,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     @Query("SELECT u from User u JOIN u.roles r WHERE r = :role")
     List<User> findUsersByRole(@Param("role") String role);
-} 
+}
