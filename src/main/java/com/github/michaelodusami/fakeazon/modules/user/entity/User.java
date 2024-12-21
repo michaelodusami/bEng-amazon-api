@@ -91,8 +91,6 @@ public class User {
      * A collection of roles assigned to the user.
      * Impact: Facilitates role-based access control (e.g., distinguishing between
      * admin and customer).
-     * FetchType.LAZY: Loads roles only when explicitly accessed to optimize
-     * performance.
      */
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
