@@ -24,11 +24,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
-    
+
     @Autowired
     private UserService userService;
 
-    @RolesAllowed("ROLE_ADMIN")
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.findAll();
@@ -49,20 +48,6 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    @RolesAllowed("ADMIN")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.save(user, UserRole.ROLE_USER).get();
-        return ResponseEntity.status(201).body(createdUser);
-    }
-
-    @PostMapping("/admin")
-    @RolesAllowed("ADMIN")
-    public ResponseEntity<User> createAdminUser(@RequestBody User user) {
-        User createdUser = userService.save(user, UserRole.ROLE_ADMIN).get();
-        return ResponseEntity.status(201).body(createdUser);
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         return userService.updateUser(id, updatedUser)
@@ -70,25 +55,16 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @RolesAllowed("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
         boolean deleted = userService.deleteUser(id);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
-    }
-
-    // 7. Get Users by Role
-    @RolesAllowed("ROLE_ADMIN")
-    @GetMapping("/role/{role}")
-    public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
-        List<User> users = userService.findUsersByRole(role);
-        return ResponseEntity.ok(users);
+        return deleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
     @PatchMapping("/{id}/password")
     public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody String newPassword) {
         boolean updated = userService.changePassword(id, newPassword);
-        return updated ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
 }

@@ -32,7 +32,7 @@ import com.github.michaelodusami.fakeazon.modules.user.entity.User;
  * @version 1.0.0
  */
 @Repository
-public interface UserRepository extends ListCrudRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     
     /**
      * Finds a user by their email address.

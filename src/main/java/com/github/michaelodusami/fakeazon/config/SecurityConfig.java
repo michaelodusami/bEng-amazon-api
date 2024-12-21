@@ -1,5 +1,7 @@
 package com.github.michaelodusami.fakeazon.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,147 +10,111 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.github.michaelodusami.fakeazon.modules.user.repository.UserRepository;
 import com.github.michaelodusami.fakeazon.security.CustomUserDetailsService;
 import com.github.michaelodusami.fakeazon.security.JwtAuthFilter;
 
 /**
  * The SecurityConfig class configures Spring Security for the Fakeazon application.
- * 
+ *
  * Purpose:
- * This configuration class sets up authentication, authorization, CORS, and JWT-based security mechanisms
- * to protect the application's endpoints. It ensures that user credentials and requests are securely handled.
- * 
+ * This configuration sets up essential security features, including:
+ * - Authentication using a custom UserDetailsService and BCrypt password encoding.
+ * - Authorization rules for public and protected API endpoints.
+ * - Stateless session management using JWT tokens.
+ * - Cross-Origin Resource Sharing (CORS) configuration for frontend-backend communication.
+ *
  * Why It Matters:
- * A robust security configuration is crucial for protecting the application against unauthorized access,
- * CSRF attacks, and ensuring secure authentication and authorization workflows.
- * 
+ * Security is critical for protecting user data and application integrity. This configuration:
+ * - Prevents unauthorized access to resources.
+ * - Encrypts sensitive data like passwords.
+ * - Ensures scalable and stateless authentication using JWT.
+ *
  * Impact on the Application:
- * - Configures the security filter chain for request authorization and JWT validation.
- * - Enables password encryption using BCrypt.
- * - Ensures stateless session management for scalability and performance.
- * - Handles CORS to allow cross-origin requests in a controlled manner.
- * 
+ * - Enables secure user authentication and role-based access control.
+ * - Allows seamless frontend-backend communication without CORS issues.
+ * - Sets a foundation for implementing advanced security features, such as method-level authorization.
+ *
  * Annotations:
- * - @Configuration: Indicates that this class contains Spring configuration beans.
- * - @EnableWebSecurity: Enables Spring Security's web security features.
- * 
- * @author Michael-Andre Odusami
- * @version 1.0.0
+ * - @Configuration: Indicates that this class provides Spring configuration beans.
+ * - @EnableWebSecurity: Activates Spring Security's web security functionality.
+ * - @EnableMethodSecurity: Enables method-level security annotations such as `@PreAuthorize`.
+ *
+ * Author: Michael-Andre Odusami
+ * Version: 1.0.0
  */
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(jsr250Enabled = true)
 public class SecurityConfig {
 
-    private CustomUserDetailsService customUserDetailsService;
-    private JwtAuthFilter jwtAuthFilter;
+    private final CustomUserDetailsService userDetailsService;
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthFilter jwtAuthFilter)
-    {
-        this.customUserDetailsService = customUserDetailsService;
+    public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthFilter jwtAuthFilter) {
+        this.userDetailsService = userDetailsService;
         this.jwtAuthFilter = jwtAuthFilter;
     }
 
-    /**
-     * Provides a PasswordEncoder bean for password hashing.
-     * 
-     * Purpose:
-     * Configures BCryptPasswordEncoder to securely hash user passwords.
-     * 
-     * Impact:
-     * Protects stored passwords against brute-force attacks by using a strong hashing algorithm.
-     * 
-     * @return a BCryptPasswordEncoder instance.
-     */
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .cors(Customizer.withDefaults())
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/v1/auth/register", "/v1/auth/login", "/v1/auth/register/admin").permitAll()
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> 
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        
+        return http.build();
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customUserDetailsService);
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
-
-
-    /**
-     * Configures the SecurityFilterChain for HTTP security.
-     * 
-     * Purpose:
-     * Sets up the security filter chain to handle authentication, authorization, and session management.
-     * 
-     * Impact:
-     * - Allows public access to authentication endpoints (e.g., `/v1/auth/**`).
-     * - Secures all other endpoints by requiring authentication.
-     * - Implements stateless session management for scalability.
-     * - Adds the JWT authentication filter before the UsernamePasswordAuthenticationFilter.
-     * 
-     * @param http the HttpSecurity instance to configure.
-     * @return the configured SecurityFilterChain.
-     * @throws Exception if an error occurs during configuration.
-     */
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(authorize ->
-                authorize.requestMatchers("/v1/auth/register", "/v1/auth/login").permitAll()
-                         .anyRequest().authenticated()
-            )
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-            .httpBasic(Customizer.withDefaults());
-        return http.build();
-    }
-
-    /**
-     * Configures a CORS filter for cross-origin request handling.
-     * 
-     * Purpose:
-     * Allows cross-origin requests from any origin, with all methods and headers permitted.
-     * 
-     * Impact:
-     * - Facilitates communication between the frontend and backend in development.
-     * - Prevents CORS errors when APIs are consumed by external clients.
-     * 
-     * @return the configured CorsFilter.
-     */
-    @Bean
-    public CorsFilter corsFilter() {
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
-
-    // @Bean
-    // public GrantedAuthorityDefaults grantedAuthorityDefaults() {
-    //     return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
-    // }
 }

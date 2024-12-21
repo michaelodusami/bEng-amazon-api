@@ -3,6 +3,8 @@ package com.github.michaelodusami.fakeazon.security;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
@@ -20,22 +22,28 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * The JwtAuthFilter class is a custom Spring Security filter that intercepts requests,
+ * The JwtAuthFilter class is a custom Spring Security filter that intercepts
+ * requests,
  * validates JWTs, and sets the authentication context if the token is valid.
  * 
  * Purpose:
- * This filter ensures that incoming requests include a valid JWT for authentication.
- * It extracts the token from the `Authorization` header, validates it, and sets the
+ * This filter ensures that incoming requests include a valid JWT for
+ * authentication.
+ * It extracts the token from the `Authorization` header, validates it, and sets
+ * the
  * authentication context if the token is valid.
  * 
  * Why It Matters:
- * Filters like this are critical for securing REST APIs by ensuring that only authenticated
+ * Filters like this are critical for securing REST APIs by ensuring that only
+ * authenticated
  * users can access protected endpoints.
  * 
  * Impact on the Application:
  * - Validates JWTs in real-time to enforce secure access to resources.
- * - Sets the security context for authenticated users, enabling role-based access control.
- * - Rejects requests with invalid or missing tokens without invoking the controller logic.
+ * - Sets the security context for authenticated users, enabling role-based
+ * access control.
+ * - Rejects requests with invalid or missing tokens without invoking the
+ * controller logic.
  * 
  * @author Michael-Andre Odusami
  * @version 1.0.0
@@ -46,8 +54,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private UserRepository userRepository;
     private JwtService jwtService;
 
-    public JwtAuthFilter(JwtService jwtService, UserRepository userRepository)
-    {
+    @Autowired
+    public JwtAuthFilter(JwtService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
     }
@@ -56,7 +64,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      * Filters incoming requests to validate the JWT in the `Authorization` header.
      * 
      * Purpose:
-     * Checks if the request contains a valid JWT. If valid, it sets the authentication
+     * Checks if the request contains a valid JWT. If valid, it sets the
+     * authentication
      * context for the user. Otherwise, the request proceeds without authentication.
      * 
      * Impact:
@@ -64,16 +73,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      * - Sets the authentication context for the current request.
      * - Prevents unauthorized access to protected endpoints.
      * 
-     * @param request the incoming HTTP request.
-     * @param response the HTTP response to be sent.
+     * @param request     the incoming HTTP request.
+     * @param response    the HTTP response to be sent.
      * @param filterChain the filter chain to pass control to the next filter.
      * @throws ServletException if a servlet-specific error occurs.
-     * @throws IOException if an I/O error occurs during request processing.
+     * @throws IOException      if an I/O error occurs during request processing.
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-        throws ServletException, IOException 
-    {
+            throws ServletException, IOException {
+
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (header == null || !header.startsWith("Bearer ")) {
@@ -87,10 +96,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             var userOptional = userRepository.findByEmail(username);
 
             if (userOptional.isPresent()) {
+
                 var user = userOptional.get();
                 var userDetails = new UserDetails(user);
-                
+
                 if (jwtService.validateToken(token, userDetails)) {
+
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
@@ -101,6 +112,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
             }
         } catch (RuntimeException ex) {
+
             // Log the exception and skip setting the SecurityContext
             System.err.println("JWT validation failed: " + ex.getMessage());
         }

@@ -23,12 +23,12 @@ public enum UserRole {
     /**
      * Represents a standard user with access to basic application functionalities.
      */
-    ROLE_USER("ROLE_USER"),
+    ROLE_USER("USER"),
 
     /**
      * Represents an administrator with elevated permissions for managing users and system settings.
      */
-    ROLE_ADMIN("ROLE_ADMIN");
+    ROLE_ADMIN("ADMIN");
 
     private final String role;
 

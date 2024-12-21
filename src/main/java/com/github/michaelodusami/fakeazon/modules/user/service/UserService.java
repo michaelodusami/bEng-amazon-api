@@ -16,15 +16,19 @@ import com.github.michaelodusami.fakeazon.modules.user.repository.UserRepository
 import lombok.NonNull;
 
 /**
- * The UserService class manages the business logic related to user operations in the Fakeazon application.
+ * The UserService class manages the business logic related to user operations
+ * in the Fakeazon application.
  * 
  * Purpose:
- * This class provides a service layer that interacts with the `UserRepository` for managing user data.
- * It handles operations such as user registration, fetching, updating, and deleting user accounts,
+ * This class provides a service layer that interacts with the `UserRepository`
+ * for managing user data.
+ * It handles operations such as user registration, fetching, updating, and
+ * deleting user accounts,
  * ensuring data consistency and enforcing application rules.
  * 
  * Why It Matters:
- * The service layer is crucial for maintaining a clean separation of concerns, allowing controllers 
+ * The service layer is crucial for maintaining a clean separation of concerns,
+ * allowing controllers
  * to remain lightweight and focused on handling HTTP requests.
  * 
  * Impact on the Application:
@@ -37,24 +41,22 @@ import lombok.NonNull;
  */
 @Service
 public class UserService {
-    
+
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
     /**
      * Constructs the UserService with required dependencies.
      * 
-     * @param userRepository the repository for interacting with the user database.
+     * @param userRepository  the repository for interacting with the user database.
      * @param passwordEncoder the encoder used to securely hash passwords.
      */
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder)
-    {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    
     /**
      * Retrieves all users from the database.
      * 
@@ -62,16 +64,15 @@ public class UserService {
      * Allows administrators or authorized roles to fetch a list of all users.
      * 
      * Impact:
-     * Facilitates user management by providing visibility into all registered accounts.
+     * Facilitates user management by providing visibility into all registered
+     * accounts.
      * 
      * @return a list of all users.
      */
-    public List<User> findAll()
-    {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    
     /**
      * Finds a user by their unique ID.
      * 
@@ -79,17 +80,16 @@ public class UserService {
      * Provides a way to fetch user details using their primary key.
      * 
      * Impact:
-     * Supports user-specific operations such as profile management or account updates.
+     * Supports user-specific operations such as profile management or account
+     * updates.
      * 
      * @param id the ID of the user to find.
      * @return an Optional containing the user if found, otherwise empty.
      */
-    public Optional<User> findById(@NonNull Long id)
-    {
+    public Optional<User> findById(@NonNull Long id) {
         return userRepository.findById(id);
     }
 
-    
     /**
      * Finds a user by their email address.
      * 
@@ -102,16 +102,16 @@ public class UserService {
      * @param email the email address of the user.
      * @return an Optional containing the user if found, otherwise empty.
      */
-    public Optional<User> findByEmail(@NonNull String email)
-    {
+    public Optional<User> findByEmail(@NonNull String email) {
         return userRepository.findByEmail(email);
     }
-    
+
     /**
      * Registers a new user based on the provided registration request.
      * 
      * Purpose:
-     * Creates a new user account while enforcing unique email constraints and encoding passwords.
+     * Creates a new user account while enforcing unique email constraints and
+     * encoding passwords.
      * 
      * Impact:
      * Prevents duplicate registrations and ensures secure password storage.
@@ -119,11 +119,9 @@ public class UserService {
      * @param registerRequest the details of the user to register.
      * @return an Optional containing the newly registered user.
      */
-    public Optional<User> save(@NonNull RegisterRequest registerRequest)
-    {
-        
-        if (findByEmail(registerRequest.getEmail()).isPresent())
-        {
+    public Optional<User> save(@NonNull RegisterRequest registerRequest) {
+
+        if (findByEmail(registerRequest.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already registered");
         }
         User user = new User();
@@ -136,11 +134,9 @@ public class UserService {
         return Optional.of(savedUser);
     }
 
-    public Optional<User> save(@NonNull RegisterRequest registerRequest, UserRole role)
-    {
-        
-        if (findByEmail(registerRequest.getEmail()).isPresent())
-        {
+    public Optional<User> save(@NonNull RegisterRequest registerRequest, UserRole role) {
+
+        if (findByEmail(registerRequest.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already registered");
         }
         User user = new User();
@@ -166,21 +162,19 @@ public class UserService {
      * @param role the role to assign to the user.
      * @return an Optional containing the saved user.
      */
-    public Optional<User> save(@NonNull User user, UserRole role)
-    {
-        
-        if (findByEmail(user.getEmail()).isPresent())
-        {
+    public Optional<User> save(@NonNull User user, UserRole role) {
+
+        if (findByEmail(user.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already registered");
         }
-      
+
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.getRoles().add(role.getRole());
         User savedUser = userRepository.save(user);
         return Optional.of(savedUser);
     }
-    
+
     /**
      * Deletes a user by their ID.
      * 
@@ -193,12 +187,13 @@ public class UserService {
      * @param id the ID of the user to delete.
      * @return true if the user was successfully deleted, otherwise false.
      */
-    public boolean deleteUser(@NonNull Long id)
-    {
+    public boolean deleteUser(@NonNull Long id) {
+        if (findById(id).isEmpty()) {
+            return false;
+        }
         userRepository.deleteById(id);
-        return findById(id).isEmpty();
+        return true;
     }
-
 
     /**
      * Updates an existing user's details.
@@ -209,7 +204,7 @@ public class UserService {
      * Impact:
      * Provides flexibility to keep user information up-to-date.
      * 
-     * @param id the ID of the user to update.
+     * @param id          the ID of the user to update.
      * @param updatedUser the user object containing updated details.
      * @return an Optional containing the updated user if the update was successful.
      */
@@ -235,7 +230,6 @@ public class UserService {
         });
     }
 
-
     /**
      * Changes a user's password.
      * 
@@ -245,7 +239,7 @@ public class UserService {
      * Impact:
      * Improves account security by enabling password changes.
      * 
-     * @param id the ID of the user.
+     * @param id          the ID of the user.
      * @param newPassword the new password to set.
      * @return true if the password was successfully updated, otherwise false.
      */
@@ -257,7 +251,6 @@ public class UserService {
             return true;
         }).orElse(false);
     }
-
 
     /**
      * Finds users by their role.
@@ -274,6 +267,5 @@ public class UserService {
     public List<User> findUsersByRole(String role) {
         return userRepository.findUsersByRole(role);
     }
-    
-    
+
 }

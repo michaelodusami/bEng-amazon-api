@@ -19,29 +19,37 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * The User class represents a user account in the Fakeazon eCommerce application.
+ * The User class represents a user account in the Fakeazon eCommerce
+ * application.
  * 
  * Purpose:
- * This class serves as a data model for user-related information in the application.
- * It encapsulates critical user details such as name, email, password, roles, and timestamps
+ * This class serves as a data model for user-related information in the
+ * application.
+ * It encapsulates critical user details such as name, email, password, roles,
+ * and timestamps
  * for account creation and updates.
  * 
  * Why It Matters:
- * Users are a core component of the Fakeazon platform. They enable essential functionalities
- * such as account management, authentication, and authorization. This class ensures
+ * Users are a core component of the Fakeazon platform. They enable essential
+ * functionalities
+ * such as account management, authentication, and authorization. This class
+ * ensures
  * consistency and ease of management for user-related data.
  * 
  * Impact on the Application:
  * - Supports user registration and login features.
  * - Enables role-based access control through the roles field.
- * - Provides timestamps to track account creation and modification, which can be used for 
- *   auditing or analytics purposes.
+ * - Provides timestamps to track account creation and modification, which can
+ * be used for
+ * auditing or analytics purposes.
  * 
  * Annotations:
  * - @Entity: Maps this class to a database table named "users".
  * - @Table: Specifies the table name explicitly.
- * - @NoArgsConstructor, @AllArgsConstructor, @Data, @Builder: Lombok annotations 
- *   that reduce boilerplate by generating constructors, getters, setters, and builder methods.
+ * - @NoArgsConstructor, @AllArgsConstructor, @Data, @Builder: Lombok
+ * annotations
+ * that reduce boilerplate by generating constructors, getters, setters, and
+ * builder methods.
  * 
  * @author Michael-Andre Odusami
  * @version 1.0.0
@@ -53,10 +61,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "users")
 public class User {
-    
+
     /**
      * The unique identifier for the user.
-     * Impact: Provides a primary key for the "users" table, ensuring uniqueness for each user record.
+     * Impact: Provides a primary key for the "users" table, ensuring uniqueness for
+     * each user record.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,7 +73,8 @@ public class User {
 
     /**
      * The name of the user.
-     * Impact: Used for displaying the user's identity in profiles, account settings, and other sections.
+     * Impact: Used for displaying the user's identity in profiles, account
+     * settings, and other sections.
      */
     private String name;
 
@@ -76,15 +86,17 @@ public class User {
     @Email
     private String email;
     private String password;
-    
+
     /**
      * A collection of roles assigned to the user.
-     * Impact: Facilitates role-based access control (e.g., distinguishing between admin and customer).
-     * FetchType.LAZY: Loads roles only when explicitly accessed to optimize performance.
+     * Impact: Facilitates role-based access control (e.g., distinguishing between
+     * admin and customer).
+     * FetchType.LAZY: Loads roles only when explicitly accessed to optimize
+     * performance.
      */
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
     private Set<String> roles = new HashSet<>();
-
 
     /**
      * The timestamp when the user account was created.
@@ -97,4 +109,9 @@ public class User {
      * Impact: Useful for tracking when the user details were modified.
      */
     private LocalDateTime updatedAt;
+
+    @PostConstruct
+    private void initRoles() {
+        roles = new HashSet<>();
+    }
 }
