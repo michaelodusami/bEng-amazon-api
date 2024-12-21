@@ -1,8 +1,10 @@
 package com.github.michaelodusami.fakeazon.modules.user.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -81,7 +83,8 @@ public class User {
      * FetchType.LAZY: Loads roles only when explicitly accessed to optimize performance.
      */
     @ElementCollection(fetch = FetchType.LAZY)
-    private Set<String> roles;
+    private Set<String> roles = new HashSet<>();
+
 
     /**
      * The timestamp when the user account was created.

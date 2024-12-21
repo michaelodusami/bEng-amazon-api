@@ -78,5 +78,5 @@ public enum UserRole {
             }
         }
         throw new IllegalArgumentException("No role found for: " + role);
-    }
+    } 
 }

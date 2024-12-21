@@ -1,21 +1,15 @@
 package com.github.michaelodusami.fakeazon.modules.user.dto;
 
-
-import com.github.michaelodusami.fakeazon.modules.user.entity.User;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class RegisterRequest {
+public class RegisterAdminRequest {
     @NotBlank
     @Size(min = 3, max = 50)
     private String name;
@@ -25,11 +19,6 @@ public class RegisterRequest {
     private String email;
 
     @NotBlank
-    @Size(min = 3)
+    @Size(min = 6)
     private String password;
-
-    public static RegisterRequest toRegisterRequest(User user)
-    {
-        return new RegisterRequest(user.getName(), user.getEmail(), user.getPassword());
-    }
 }

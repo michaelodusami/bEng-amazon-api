@@ -2,6 +2,7 @@ package com.github.michaelodusami.fakeazon.modules.user.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -135,6 +136,23 @@ public class UserService {
         return Optional.of(savedUser);
     }
 
+    public Optional<User> save(@NonNull RegisterRequest registerRequest, UserRole role)
+    {
+        
+        if (findByEmail(registerRequest.getEmail()).isPresent())
+        {
+            throw new IllegalArgumentException("Email already registered");
+        }
+        User user = new User();
+        user.setName(registerRequest.getName());
+        user.setEmail(registerRequest.getEmail());
+        user.getRoles().add(role.getRole());
+        String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
+        user.setPassword(encodedPassword);
+        User savedUser = userRepository.save(user);
+        return Optional.of(savedUser);
+    }
+
     /**
      * Saves a new user with a specific role.
      * 
@@ -210,7 +228,7 @@ public class UserService {
                 existingUser.setPassword(encodedPassword);
             }
             if (updatedUser.getRoles() != null) {
-                existingUser.setRoles(updatedUser.getRoles());
+                existingUser.getRoles().addAll(updatedUser.getRoles());
             }
             // Save and return the updated user
             return userRepository.save(existingUser);

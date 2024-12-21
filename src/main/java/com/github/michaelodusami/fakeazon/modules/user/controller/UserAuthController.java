@@ -17,8 +17,10 @@ import com.github.michaelodusami.fakeazon.modules.user.dto.AuthResponse;
 import com.github.michaelodusami.fakeazon.modules.user.dto.LoginRequest;
 import com.github.michaelodusami.fakeazon.modules.user.dto.RegisterRequest;
 import com.github.michaelodusami.fakeazon.modules.user.entity.User;
+import com.github.michaelodusami.fakeazon.modules.user.enums.UserRole;
 import com.github.michaelodusami.fakeazon.modules.user.service.UserService;
 import com.github.michaelodusami.fakeazon.security.JwtService;
+import com.github.michaelodusami.fakeazon.security.UserDetails;
 
 import jakarta.validation.Valid;
 
@@ -41,7 +43,9 @@ public class UserAuthController {
         try{
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
 
-            User user = (User) authenticate.getPrincipal();
+            UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
+
+            User user = userService.findByEmail(authRequest.getEmail()).get();
 
             return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,  jwtService.generateToken(user.getEmail())).body(AuthResponse.toUser(user));
         }
@@ -52,15 +56,25 @@ public class UserAuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody @Valid RegisterRequest registerRequest)
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterRequest registerRequest)
     {
         try {
-            var user = userService.save(registerRequest).get();
-            return ResponseEntity.status(HttpStatus.CREATED).body(AuthResponse.toUser(user));
+            userService.save(registerRequest, UserRole.ROLE_USER).get();
+            return ResponseEntity.status(HttpStatus.CREATED).body("Created");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
+    @PostMapping("/register/admin")
+    public ResponseEntity<String> registerAdmin(@RequestBody @Valid RegisterRequest registerRequest)
+    {
+        try {
+            userService.save(registerRequest, UserRole.ROLE_ADMIN).get();
+            return ResponseEntity.status(HttpStatus.CREATED).body("Created");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } 
+    }
   
 }

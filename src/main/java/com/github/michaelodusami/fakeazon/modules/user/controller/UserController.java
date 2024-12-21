@@ -50,14 +50,14 @@ public class UserController {
     }
 
     @PostMapping
-    @RolesAllowed("ROLE_ADMIN")
+    @RolesAllowed("ADMIN")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User createdUser = userService.save(user, UserRole.ROLE_USER).get();
         return ResponseEntity.status(201).body(createdUser);
     }
 
     @PostMapping("/admin")
-    @RolesAllowed("ROLE_ADMIN")
+    @RolesAllowed("ADMIN")
     public ResponseEntity<User> createAdminUser(@RequestBody User user) {
         User createdUser = userService.save(user, UserRole.ROLE_ADMIN).get();
         return ResponseEntity.status(201).body(createdUser);
