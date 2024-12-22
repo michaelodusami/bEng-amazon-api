@@ -200,7 +200,7 @@ public class SecurityConfig {
                                                                                                    // methods.
         configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token")); // Allowed
                                                                                                          // headers.
-        configuration.setExposedHeaders(Arrays.asList("x-auth-token")); // Headers exposed to clients.
+        configuration.setExposedHeaders(Arrays.asList("x-auth-token", "Authorization")); // Headers exposed to clients.
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // Applies the configuration to all endpoints.
         return source;
