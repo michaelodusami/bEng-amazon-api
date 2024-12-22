@@ -1,5 +1,5 @@
 
-# **Multi-Module E-Commerce Platform Backend**
+# **Amazon Backend**
 
 ---
 
